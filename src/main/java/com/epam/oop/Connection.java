@@ -1,5 +1,8 @@
 package com.epam.oop;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -31,6 +34,31 @@ public class Connection {
             logger.warning("Подключение отсутствует");
         }
         return false;
+    }
+
+    public String getPhraseFromSite() {
+        if (checkConnection()) {
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(siteConnection.getInputStream(), "utf8"));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains("quote__body")) {
+                        line = reader.readLine();
+                        closeConnection();
+                        reader.close();
+                        if (!line.contains("Утверждено")) {
+                            return line;
+                        } else {
+
+                            return "Цитаты не найдено.";
+                        }
+                    }
+                }
+            }catch (IOException e){
+                logger.warning("Неудалось создать входящий поток");
+            }
+        }
+        return "Отстутствует соединение.";
     }
 
     public void closeConnection(){

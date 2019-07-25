@@ -11,11 +11,9 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         PropertyReader pr = new PropertyReader();
         logger.info("Input site name");
-        //System.out.println("Input site name");
         String siteName = sc.next();
         while (true) {
             logger.info("Input your number");
-            //System.out.println("Input your number");
             String numStr = sc.next();
             Integer num;
             try {
@@ -31,8 +29,7 @@ public class Main {
             connection.pr = pr;
             connection.openConnection(siteName,num);
             Parser parser = new Parser();
-            parser.setConnection(connection);
-            parser.getPhraseFromSite();
+            parser.setPhrase(connection.getPhraseFromSite());
             parser.parsePhrase();
             logger.info(parser.getPhrase());
         }
